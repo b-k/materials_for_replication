@@ -1,0 +1,14 @@
+[package]
+name = "reproducible_crawl"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+thirtyfour_sync="0.25.0"
+rusqlite={version="0.25.3", features=["csvtab"]}
+arrow="4.0.0"
+cute="0.3.0"
+datafusion="4.0.0"
+#tokio="1.9.0"
+#color-eyre="0.5.11"
+#select = "0.5.0"
