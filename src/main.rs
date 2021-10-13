@@ -2,11 +2,6 @@
 use thirtyfour_sync::prelude::*;
 use thirtyfour_sync::error::WebDriverError;
 use std::{thread, time::Duration, io::Write, fs, env};
-//use rusqlite::{params, Connection, Result};
-
-//use datafusion::datasource::TableProvider;
-//use datafusion::datasource::csv::{CsvFile, CsvReadOptions};
-//use datafusion::execution::context::ExecutionContext;
 
 fn nap(){ thread::sleep(Duration::from_millis(4500)); }
 
@@ -52,9 +47,8 @@ fn get_tab() -> Result<i32, WebDriverError> {
      let caps = DesiredCapabilities::firefox();
      accept_all_cookies()?;
 
-     //let mut tab = fs::File::create("tab").expect("create failed");
-     let mut tab = fs::OpenOptions::new().write(true).append(true).open("tab").unwrap();
-     //writeln!(tab, "name|tags|must_be|will_be|strongly_encourage|encourage").expect("write glitch.");
+     let mut tab = fs::OpenOptions::new().append(true).create(true).open("tab").unwrap();
+     writeln!(tab, "name|tags|must_be|will_be|strongly_encourage|encourage").expect("write glitch.");
 
      //Got our journal list. Now tick through it.
 
@@ -83,40 +77,6 @@ fn get_tab() -> Result<i32, WebDriverError> {
      }
      Ok(0)
 }
-
-fn get_stats() -> Result<i32, String>{Ok(8)}
-/*
-fn get_stats() -> Result<()>{
-    //let conn = Connection::open_in_memory()?;
-
-    /*
-    let conn = Connection::open("tab.db")?;
-    match conn.execute(
-        "CREATE Virtual TABLE t1 USING csv(filename='tab');
-SELECT * FROM t1;
-create table tab as select * from t1;
-",
-        [],
-    ) { Ok(_) => {}, Err(x) => {println!("{:?}",x)}};
-conn.close();
-
-    // create local execution context
-    let mut ctx = ExecutionContext::new(); 
-    // register csv file with the execution context
-    ctx.register_csv(
-        "tab",
-        "target/debug/tab",
-        CsvReadOptions::new().delimiter(b'|'),
-    );
-let testdata = arrow::util::test_util::arrow_test_data();
-let csvdata = CsvFile::try_new(
-    "target/debug/tab",
-    CsvReadOptions::new().delimiter(b'|'),
-);
-*/
-Ok(())
-}
-*/
 
 fn main() {
      let args: Vec<String> = env::args().collect();

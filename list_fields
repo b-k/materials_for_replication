@@ -1,18 +1,13 @@
 #!/usr/bin/bash
 Discussion="Get a list of the fields with the highest rates of boilerplate with the 'will be' or 'must be' wordings regarding submissions.
-
-taglist will be the list of all tags. Query all tags, clean some things, convert all the commans to newlines, get unique tags
-
-The while/do loop uses a few bashisms to go line by line through the resulting $taglist.
-
-Count 'will be/must be's among the journals with the given tags, and the count of all journals with those tags.
-
-Filter out those tags with fewer than $cutoff journals, print to a file named field.counts.
+* taglist will be the list of all tags. Query all tags, clean some things, convert all the commans to newlines, get unique tags
+* The while/do loop uses a few bashisms to go line by line through the resulting $taglist.
+* Count 'will be/must be's among the journals with the given tags, and the count of all journals with those tags.
+F* ilter out those tags with fewer than $cutoff journals, print to a file named field.counts.
 "
 
 #don't print tags with fewer than $cutoff journals. Set high because we want broad fields.
 cutoff=100
-
 
 taglist=`sqlite3 t.db "select tags from t"|sed -e 's/Some(//; s/)//g; s/, /\n/g' -e "/'/d" |sort|uniq`
 

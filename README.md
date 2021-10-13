@@ -13,14 +13,19 @@ journal, making the process slow but very reliable.
 
 Overview:
 
-* Start a docker instance with the appropriate version of Selenium. The `makefile` will do this and
-  then `cargo run` the rust program.
-* If you' haven't yet, run the Rust program to click every journal in Springer's alphabetical list and annotate whether
-  certain policies are included.
+* Start a docker instance with the appropriate version of Selenium. Paste this onto your command line:
+  
+```
+docker run --rm -d -p 4444:4444 -p 5900:5900 --name selenium-server -v /dev/shm:/dev/shm selenium/standalone-firefox-debug:3.141.59-zinc
+```
+
+* Run the Rust program to get the list of every journal in Springer's alphabetical index pages.
 * Run it again after changing the `1` on line 34 to a `2` to get the page twos of the alphabetical
   index. See above for the apology about hacks.
-* Read the output text into an SQLite database using your favorite method. I use `apop_text_to_db` from the Apophenia project.
-  The database file should be named `t.db` and the table `t`.
+* This generates a file named `urls`.
+* Run the Rust program to click every journal in Springer's alphabetical list and annotate whether
+  certain policies are included. This generates a file named `tab`
+* Read the output text into an SQLite database using your favorite method. I use `apop_text_to_db` from the Apophenia project. The database file should be named `t.db` and the table `t`.
 * Run the `list_fields` script to get the final per-field tallies.
 
 Policies
