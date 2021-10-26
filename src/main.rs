@@ -3,20 +3,14 @@ use std::{env, fs, io::Write, thread, time::Duration};
 use thirtyfour_sync::error::WebDriverError;
 use thirtyfour_sync::prelude::*;
 
-fn nap() {
-    thread::sleep(Duration::from_millis(4500));
-}
-
 fn accept_all_cookies() -> Result<i32, WebDriverError> {
     let caps = DesiredCapabilities::firefox();
     let driver = WebDriver::new("http://localhost:4444/wd/hub", &caps)?;
-    driver.get("https://link.springer.com/journals/y/1")?;
-    nap(); //Wait for the 'accept all cookies' popup
-    driver
-        .query(By::Id("onetrust-accept-btn-handler"))
-        .first()?
-        .click()?;
-    driver.quit()?;
+    driver.get("https://link.springer.com/journals/y/1")?
+          .query(By::Id("onetrust-accept-btn-handler"))
+          .first()?
+          .click()?
+          .quit()?;
     Ok(0)
 }
 
@@ -25,13 +19,14 @@ fn get_jrnls() -> Result<i32, WebDriverError> {
     let driver = WebDriver::new("http://localhost:4444/wd/hub", &caps)?;
     accept_all_cookies()?;
 
-    let mut urls = std::fs::File::create("urls2")?;
+    let mut urls = std::fs::File::create("urls")?;
     let mut r: Vec<char> = ('a'..='z').collect();
     r.push('0');
 
     for i in r.iter() {
+      for j in [1, 2] {
         println!("{}", i);
-        match driver.get(format!("https://link.springer.com/journals/{}/2", i)) {
+        match driver.get(format!("https://link.springer.com/journals/{}/{}", i, j)) {
             Ok(_) => {
                 let jrnls = driver.query(By::ClassName("c-atoz-list__link")).all()?;
                 for j in jrnls.iter() {
@@ -42,6 +37,7 @@ fn get_jrnls() -> Result<i32, WebDriverError> {
             }
             Err(_) => continue,
         }
+      }
     }
     driver.quit();
     Ok(0)
@@ -112,7 +108,7 @@ fn main() {
 get_jrnls to get the list of journals
 get_tab: tabulate each journal"
         );
-        return ();
+        return;
     }
     match args[1].as_str() {
         "get_jrnls" => {
@@ -121,10 +117,6 @@ get_tab: tabulate each journal"
         "get_tab" => {
             get_tab().unwrap();
         }
-        "get_stats" => {
-            get_stats().ok();
-        }
-        &_ => return (),
+        &_ => (),
     }
-    ()
 }
