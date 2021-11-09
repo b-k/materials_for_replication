@@ -1,16 +1,16 @@
 #![allow(unused_must_use)] //So you know right now this is not production quality.
-use std::{env, fs, io::Write, thread, time::Duration};
+use std::{env, fs, io::Write};
 use thirtyfour_sync::error::WebDriverError;
 use thirtyfour_sync::prelude::*;
 
 fn accept_all_cookies() -> Result<i32, WebDriverError> {
     let caps = DesiredCapabilities::firefox();
     let driver = WebDriver::new("http://localhost:4444/wd/hub", &caps)?;
-    driver.get("https://link.springer.com/journals/y/1")?
-          .query(By::Id("onetrust-accept-btn-handler"))
+    driver.get("https://link.springer.com/journals/y/1")?;
+    driver.query(By::Id("onetrust-accept-btn-handler"))
           .first()?
-          .click()?
-          .quit()?;
+          .click()?;
+    driver.quit()?;
     Ok(0)
 }
 
@@ -54,7 +54,7 @@ fn get_tab() -> Result<i32, WebDriverError> {
         .unwrap();
     writeln!(
         tab,
-        "name|tags|must_be|will_be|strongly_encourage|encourage"
+        "name|tags|must_be|will_be|strongly_encourage|encourage|we_encourage|t1|t2|t3|t4|be_prepared|pleiades|generic"
     )
     .expect("write glitch.");
 
@@ -87,13 +87,22 @@ fn get_tab() -> Result<i32, WebDriverError> {
         let ps = driver.page_source()?;
         writeln!(
             tab,
-            "{}|{:?}|{:?}|{:?}|{:?}|{:?}",
+            "{}|{:?}|{:?}|{:?}|{:?}|{:?}|{:?}|{:?}|{:?}|{:?}|{:?}|{:?}|{:?}|{:?}|{:?}",
             name,
             t,
             ps.find("data sets must be made freely available"),
             ps.find("all relevant raw data, will be freely available"),
             ps.find("strongly encourages that all datasets"),
             ps.find("encourage authors to ensure that their datasets"),
+            ps.find("We encourage research data to be archived"),
+            ps.find("ype 1 research data policy"),
+            ps.find("ype 2 research data policy"),
+            ps.find("ype 3 research data policy"),
+            ps.find("ype 4 research data policy"),
+            ps.find("be prepared to send relevant documentation or data"),
+            ps.find("pleiades.online"),
+            ps.find("palgrave.com"),
+            ps.find("Read and agree to our Editorial Policies"),
         )?;
         driver.quit()?;
     }

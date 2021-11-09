@@ -12,8 +12,9 @@ cutoff=100
 taglist=`sqlite3 t.db "select tags from t"|sed -e 's/Some(//; s/)//g; s/, /\n/g' -e "/'/d" |sort|uniq`
 
 while read -r i; do
-   wb=`sqlite3 t.db "select count(*) from t where (will_be!='None' or must_be!='None')
-       and tags like '%${i}%'"`
+   wb=`sqlite3 t.db "select count(*) from t where
+                     (will_be!='None' or must_be!='None' or t3!='None' or t4!='None')
+                     and tags like '%${i}%'"`
    all=`sqlite3 t.db "select count(*) from t where tags like '%${i}%'"`
    if [ $all -gt $cutoff ] ; then
        printf "%i %i %.0f%% %s\n" $wb $all $(bc -l <<< "$wb/$all * 100") $i
