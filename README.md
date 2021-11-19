@@ -1,6 +1,8 @@
 # materials_for_replication
 
-This repository provides the code used to generate the table in [name/link to article] giving the percent of journals in different fields with an open data/code requirement.
+This repository provides the code used to generate the table in the Ars Technica article
+[Keeping science reproducible in a world of custom code and
+data](https://arstechnica.com/science/2021/11/keeping-science-reproducible-in-a-world-of-custom-code-and-data/), giving the percent of journals in different fields with an open data/code requirement.
 
 It goes through Springer's index of journals and opens the editorial requirements page for each, as one would do in one's browser.  It doesn't do anything described in common language as "downloading", such as pulling PDFs of journal articles.
 
