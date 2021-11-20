@@ -1,5 +1,9 @@
 # materials_for_replication
 
+[![DOI](https://zenodo.org/badge/412662986.svg)](https://zenodo.org/badge/latestdoi/412662986)
+
+
+
 This repository provides the code used to generate the table in the Ars Technica article
 [Keeping science reproducible in a world of custom code and
 data](https://arstechnica.com/science/2021/11/keeping-science-reproducible-in-a-world-of-custom-code-and-data/), giving the percent of journals in different fields with an open data/code requirement.
